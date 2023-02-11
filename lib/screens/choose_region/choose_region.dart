@@ -80,7 +80,7 @@ class ChooseRegion extends StatelessWidget {
                     ),
                     onPressed: watchCubit.dropdownvalueCity != null
                         ? () {
-                            location.write(
+                            location!.put(
                               'location',
                               {
                                 "region": watchCubit.dropdownvalueRegion,

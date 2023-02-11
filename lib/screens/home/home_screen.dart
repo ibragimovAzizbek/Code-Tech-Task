@@ -1,15 +1,30 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:codetechtask/core/constants/color_const.dart';
+import 'package:codetechtask/cubit/home/time/time_cubit.dart';
+import 'package:codetechtask/cubit/home/time/time_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/components/func/find_month_name.dart';
 import '../../core/components/func/weekday_day_name.dart';
 import '../../core/components/theme/text_style.dart';
+import '../../main.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<TimeCubit>().fetchTime();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,65 +41,64 @@ class HomePage extends StatelessWidget {
               children: [
                 SizedBox(height: 70.h),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16.w),
-                  padding: EdgeInsets.symmetric(vertical: 70.h),
-                  width: double.infinity,
-                  height: 400.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16.r),
-                    border: Border.all(color: Colors.blueAccent),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // SizedBox(height: 60.h),
-                      StreamBuilder<DateTime>(
-                        stream: Stream.periodic(
-                            const Duration(seconds: 60), (_) => DateTime.now()),
-                        builder: (context, snapshot) {
-                          return Text(
-                            snapshot.data != null
-                                ? "${snapshot.data!.hour} : ${snapshot.data!.minute}"
-                                : "${DateTime.now().hour} : ${DateTime.now().minute}",
-                            style: textstyle(
-                              color: AppColor.clockColor,
-                              size: 80.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          );
-                        },
-                      ),
-                      StreamBuilder<DateTime>(
-                        stream: Stream.periodic(
-                            const Duration(hours: 24), (_) => DateTime.now()),
-                        builder: (context, snapshot) {
+                    margin: EdgeInsets.symmetric(horizontal: 16.w),
+                    padding: EdgeInsets.symmetric(vertical: 70.h),
+                    width: double.infinity,
+                    height: 400.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.r),
+                      border: Border.all(color: Colors.blueAccent),
+                    ),
+                    child: BlocBuilder<TimeCubit, TimeState>(
+                      builder: (context, state) {
+                        if (state is TimeSuccussfully) {
                           return Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
+                              // SizedBox(height: 60.h),
                               Text(
-                                snapshot.data != null
-                                    ? "${snapshot.data!.day} - ${findMonthName(snapshot.data!.month)}"
-                                    : "${DateTime.now().day} - ${findMonthName(DateTime.now().month)}",
+                                "${timeData!.get('time').hour} : ${timeData!.get('time').minute}",
                                 style: textstyle(
-                                  color: AppColor.dateColor,
-                                  size: 40.sp,
+                                  color: AppColor.clockColor,
+                                  size: 80.sp,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Text(
-                                weekdayDayName(DateTime.now().weekday),
-                                style: textstyle(
-                                  color: AppColor.dayColor,
-                                  size: 40.sp,
-                                  fontWeight: FontWeight.w300,
-                                ),
+                              Column(
+                                children: [
+                                  Text(
+                                    "${timeData!.get('time').day} - ${findMonthName(timeData!.get('time').month)}",
+                                    style: textstyle(
+                                      color: AppColor.dateColor,
+                                      size: 40.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    weekdayDayName(
+                                        timeData!.get('time').weekday),
+                                    style: textstyle(
+                                      color: AppColor.dayColor,
+                                      size: 40.sp,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+                        } else if (state is TimeError) {
+                          return Center(
+                            child: Text(
+                              state.msg,
+                              style: TextStyle(fontSize: 18.sp),
+                            ),
+                          );
+                        } else {
+                          return const SizedBox();
+                        }
+                      },
+                    )),
                 SizedBox(height: 30.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

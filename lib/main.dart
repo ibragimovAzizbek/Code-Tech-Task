@@ -1,22 +1,30 @@
 import 'package:codetechtask/cubit/chooseRegion/choose_region_cubit.dart';
+import 'package:codetechtask/cubit/home/time/time_cubit.dart';
 import 'package:codetechtask/models/services/city_service.dart';
 import 'package:codetechtask/models/services/region_service.dart';
+import 'package:codetechtask/models/services/time_zone_service.dart';
 import 'package:codetechtask/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:hive_flutter/adapters.dart';
 
-final location = GetStorage();
+Box? location;
+Box? timeData;
 
 void main() async {
-  await GetStorage.init();
+  await Hive.initFlutter();
+
+  location = await Hive.openBox('location');
+  timeData = await Hive.openBox<DateTime>('time');
+
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider(
             create: (context) =>
                 ChooseRegionCubit(RegionService(), CityService())),
+        BlocProvider(create: (context) => TimeCubit(TimeZoneService())),
       ],
       child: const MyApp(),
     ),
@@ -40,7 +48,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
           ),
           onGenerateRoute: RouterCont.inherentce.onGenerateRoute,
-          initialRoute: location.read('location') != null ? '/home' : '/init',
+          initialRoute: location!.get('location') != null ? '/home' : '/init',
         );
       },
     );
