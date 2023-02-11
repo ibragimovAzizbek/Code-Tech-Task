@@ -5,8 +5,12 @@ import 'package:codetechtask/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+final location = GetStorage();
+
+void main() async {
+  await GetStorage.init();
   runApp(
     MultiBlocProvider(
       providers: [
@@ -36,7 +40,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
           ),
           onGenerateRoute: RouterCont.inherentce.onGenerateRoute,
-          initialRoute: '/init',
+          initialRoute: location.read('location') != null ? '/home' : '/init',
         );
       },
     );

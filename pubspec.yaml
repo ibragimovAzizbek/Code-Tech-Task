@@ -40,7 +40,7 @@ dependencies:
   dio: ^4.0.6
 
   #* DB
-  hive: ^2.2.3
+  get_storage: ^2.0.3
 
   #* STATE MANAGEMENT
   flutter_bloc: ^8.1.2
@@ -51,6 +51,8 @@ dependencies:
   #* For Freezed 
   freezed_annotation: ^2.2.0
   json_annotation: ^4.8.0
+  logger: ^1.1.0
+  
 
   
 

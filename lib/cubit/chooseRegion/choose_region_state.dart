@@ -9,12 +9,8 @@ class ChooseRegionLoading extends ChooseRegionState {}
 
 class ChooseRegionSuccessfuly extends ChooseRegionState {
   List<RegionModel> regionData;
-  ChooseRegionSuccessfuly(this.regionData);
-}
-
-class ChooseCitySuccessfuly extends ChooseRegionState {
-  List<CityModel> cityData;
-  ChooseCitySuccessfuly(this.cityData);
+  List<CityModel>? cityData;
+  ChooseRegionSuccessfuly(this.regionData, this.cityData);
 }
 
 class ChooseRegionError extends ChooseRegionState {

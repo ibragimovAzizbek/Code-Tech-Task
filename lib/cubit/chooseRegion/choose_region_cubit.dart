@@ -5,6 +5,7 @@ import 'package:codetechtask/models/services/city_service.dart';
 import 'package:codetechtask/models/services/region_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 
 class ChooseRegionCubit extends Cubit<ChooseRegionState> {
   final RegionService _regionService;
@@ -14,29 +15,33 @@ class ChooseRegionCubit extends Cubit<ChooseRegionState> {
     fetchRegion();
   }
 
-  String? dropdownvalue;
+  String? dropdownvalueRegion;
+  String? dropdownvalueCity;
   List<CityModel>? cityOfUzbekistan;
+  List<RegionModel>? regionOfUzbekistan;
+  bool iHaveCity = false;
+
+  //* Logic here
 
   Future<void> fetchRegion() async {
     emit(ChooseRegionLoading());
     await _regionService.getRegions().then((dynamic res) {
       if (res is Response) {
-        List<RegionModel> data =
+        regionOfUzbekistan =
             (res.data as List).map((e) => RegionModel.fromJson(e)).toList();
-        emit(ChooseRegionSuccessfuly(data));
+        emit(ChooseRegionSuccessfuly(regionOfUzbekistan!, cityOfUzbekistan));
       } else {
         emit(ChooseRegionError(res));
       }
     });
   }
 
-  Future<void> fetchCity() async {
-    emit(ChooseRegionLoading());
-    await _cityService.getCitys(dropdownvalue!).then((dynamic res) {
+  Future<void> fetchCity(String value) async {
+    await _cityService.getCitys(value).then((dynamic res) {
       if (res is Response) {
-        List<CityModel> data =
+        cityOfUzbekistan =
             (res.data as List).map((e) => CityModel.fromJson(e)).toList();
-        emit(ChooseCitySuccessfuly(data));
+        emit(ChooseRegionSuccessfuly(regionOfUzbekistan!, cityOfUzbekistan));
       } else {
         emit(ChooseRegionError(res));
       }
@@ -44,6 +49,13 @@ class ChooseRegionCubit extends Cubit<ChooseRegionState> {
   }
 
   changeRegion(String value) {
-    dropdownvalue = value;
+    dropdownvalueRegion = value;
+    fetchCity(value);
+    dropdownvalueCity = null;
+  }
+
+  changeCity(String value) {
+    dropdownvalueCity = value;
+    emit(ChooseRegionSuccessfuly(regionOfUzbekistan!, cityOfUzbekistan));
   }
 }
