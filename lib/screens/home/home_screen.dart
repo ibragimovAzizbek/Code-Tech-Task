@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:codetechtask/core/constants/color_const.dart';
+import 'package:codetechtask/core/widgets/drawer_widget.dart';
 import 'package:codetechtask/cubit/home/time/time_cubit.dart';
 import 'package:codetechtask/cubit/home/time/time_state.dart';
 import 'package:flutter/material.dart';
@@ -28,18 +29,19 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Image.asset(
-          'assets/background_light.png',
-          fit: BoxFit.cover,
-        ),
-        Scaffold(
-          backgroundColor: AppColor.white,
-          body: SafeArea(
-            child: Column(
+    return Scaffold(
+      drawer: const MyDrawer(),
+      appBar: AppBar(
+        iconTheme: const IconThemeData.fallback(),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Column(
               children: [
-                SizedBox(height: 70.h),
+                SizedBox(height: 50.h),
                 Container(
                     margin: EdgeInsets.symmetric(horizontal: 16.w),
                     padding: EdgeInsets.symmetric(vertical: 70.h),
@@ -55,7 +57,6 @@ class _HomePageState extends State<HomePage> {
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              // SizedBox(height: 60.h),
                               Text(
                                 "${timeData!.get('time').hour} : ${timeData!.get('time').minute}",
                                 style: textstyle(
@@ -113,32 +114,35 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Text(
                           "+27",
-                          style: textstyle(
-                              color: AppColor.regionColor, size: 50.sp),
+                          style: TextStyle(fontSize: 50.sp),
                         ),
-                        Text(
-                          "Toshkent",
-                          style: textstyle(
-                              color: AppColor.regionColor, size: 45.sp),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.65,
+                          child: Text(
+                            location!.get('location')['region'],
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 40.sp),
+                          ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ],
             ),
-          ),
+            Positioned(
+              top: -10.h,
+              left: MediaQuery.of(context).size.width / 2 - 50.w,
+              child: Image.asset(
+                'assets/gerb.png',
+                height: 150.h,
+                width: 100.w,
+              ),
+            ),
+          ],
         ),
-        Positioned(
-          top: 20.h,
-          left: MediaQuery.of(context).size.width / 2 - 50.w,
-          child: Image.asset(
-            'assets/gerb.png',
-            height: 150.h,
-            width: 100.w,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

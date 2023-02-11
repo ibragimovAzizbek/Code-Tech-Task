@@ -1,7 +1,6 @@
 import 'package:codetechtask/core/config/dio_config.dart';
 import 'package:codetechtask/core/constants/keys.dart';
 import 'package:dio/dio.dart';
-import 'package:logger/logger.dart';
 
 class TimeZoneService {
   Future<dynamic> getTimeZone() async {
@@ -12,9 +11,23 @@ class TimeZoneService {
       if (response.statusCode == 200) {
         return response;
       }
-    } catch (e) {
-      Logger().e(e);
-      return "Something wrong..";
+    } on DioError catch (e) {
+      switch (e.type) {
+        case DioErrorType.connectTimeout:
+          return "Connect Time Out.";
+
+        case DioErrorType.receiveTimeout:
+          return "Receive Time Out";
+
+        case DioErrorType.sendTimeout:
+          return "Send Time Out";
+
+        case DioErrorType.other:
+          return "Internet connection error";
+
+        default:
+          return "Unknown error in dio";
+      }
     }
   }
 }

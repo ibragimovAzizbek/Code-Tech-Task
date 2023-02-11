@@ -53,6 +53,7 @@ dependencies:
   freezed_annotation: ^2.2.0
   json_annotation: ^4.8.0
   logger: ^1.1.0
+  wakelock: ^0.6.2
   
   
 

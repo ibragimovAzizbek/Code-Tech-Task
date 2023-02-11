@@ -5,7 +5,6 @@ import 'package:codetechtask/models/services/city_service.dart';
 import 'package:codetechtask/models/services/region_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 
 class ChooseRegionCubit extends Cubit<ChooseRegionState> {
   final RegionService _regionService;

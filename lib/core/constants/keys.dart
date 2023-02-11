@@ -10,3 +10,6 @@ String cityApi =
 
 String timezone =
     "https://timezone.abstractapi.com/v1/current_time/?api_key=$timeZoneKey&location="; // Tashkent, Uzbekistan
+
+String weatherApi =
+    "https://api.open-meteo.com/v1/forecast?latitude=41.67&longitude=63.83&hourly=temperature_2m&timezone=auto";

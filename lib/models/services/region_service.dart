@@ -10,8 +10,23 @@ class RegionService {
       if (response.statusCode == 200) {
         return response;
       }
-    } catch (e) {
-      return "Something wrong..";
+    } on DioError catch (e) {
+      switch (e.type) {
+        case DioErrorType.connectTimeout:
+          return "Connect Time Out.";
+
+        case DioErrorType.receiveTimeout:
+          return "Receive Time Out";
+
+        case DioErrorType.sendTimeout:
+          return "Send Time Out";
+
+        case DioErrorType.other:
+          return "Internet connection error";
+
+        default:
+          return "Unknown error in dio";
+      }
     }
   }
 }

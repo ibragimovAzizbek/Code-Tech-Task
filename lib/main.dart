@@ -1,4 +1,5 @@
 import 'package:codetechtask/cubit/chooseRegion/choose_region_cubit.dart';
+import 'package:codetechtask/cubit/drawer/drawer_cubit.dart';
 import 'package:codetechtask/cubit/home/time/time_cubit.dart';
 import 'package:codetechtask/models/services/city_service.dart';
 import 'package:codetechtask/models/services/region_service.dart';
@@ -8,11 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:wakelock/wakelock.dart';
 
 Box? location;
 Box? timeData;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Wakelock.enable();
   await Hive.initFlutter();
 
   location = await Hive.openBox('location');
@@ -25,6 +29,7 @@ void main() async {
             create: (context) =>
                 ChooseRegionCubit(RegionService(), CityService())),
         BlocProvider(create: (context) => TimeCubit(TimeZoneService())),
+        BlocProvider(create: (context) => DrawerCubit()),
       ],
       child: const MyApp(),
     ),
@@ -44,9 +49,9 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Code Tech Task',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
+          theme: context.watch<DrawerCubit>().appMode
+              ? ThemeData.dark()
+              : ThemeData.light(),
           onGenerateRoute: RouterCont.inherentce.onGenerateRoute,
           initialRoute: location!.get('location') != null ? '/home' : '/init',
         );

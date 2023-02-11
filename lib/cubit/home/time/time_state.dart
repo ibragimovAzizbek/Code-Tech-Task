@@ -1,5 +1,3 @@
-import 'package:codetechtask/models/time/time_zone_model.dart';
-
 abstract class TimeState {}
 
 class TimeInitil extends TimeState {}

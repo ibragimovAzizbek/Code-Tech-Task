@@ -16,7 +16,6 @@ class TimeCubit extends Cubit<TimeState> {
     await timeZoneService.getTimeZone().then((response) {
       if (response is Response) {
         timeData!.put('time', TimeZoneModel.fromJson(response.data).datetime!);
-        Logger().d("TIME: ${timeData!.get('time')}");
         emit(TimeSuccussfully());
         changeTime();
       } else {
@@ -25,25 +24,35 @@ class TimeCubit extends Cubit<TimeState> {
     });
   }
 
+  // Future<void> fetchWeather() async {
+  //   await WeatherService.getweatherService().then((response) {
+  //     if (response is Response) {
+  //       Logger().d(response.data);
+  //       weather = WeatherModel.fromJson(response.data);
+  //       emit(TimeSuccussfully());
+  //     } else {
+  //       emit(TimeError(response));
+  //     }
+  //   });
+  // }
+
   changeTime() {
-    Logger().d("TIME FIRST: ${timeData!.get('time')}");
-    DateTime time = timeData!.get('time');
     Timer.periodic(
       const Duration(seconds: 60),
       (Timer t) => {
         timeData!.put(
           'time',
           DateTime(
-            time.year,
-            time.month,
-            time.day,
-            time.hour,
-            time.minute + 1,
-            time.second,
-            time.millisecond,
+            timeData!.get('time').year,
+            timeData!.get('time').month,
+            timeData!.get('time').day,
+            timeData!.get('time').hour,
+            timeData!.get('time').minute + 1,
+            timeData!.get('time').second,
+            timeData!.get('time').millisecond,
           ),
         ),
-        Logger().d("TIME SECOND: $time"),
+        Logger().d(timeData!.get('time')),
         emit(TimeSuccussfully()),
       },
     );
