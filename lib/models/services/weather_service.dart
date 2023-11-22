@@ -3,14 +3,19 @@ import 'package:codetechtask/core/constants/keys.dart';
 import 'package:dio/dio.dart';
 
 class WeatherService {
-  static Future<dynamic> getweatherService() async {
+  static Future<dynamic> getweatherService(int index) async {
     try {
+      print('#######START########');
       Response response =
           await DioConfig.inherentce.createRequest().get(weatherApi);
       if (response.statusCode == 200) {
-        return response;
+        print('#######SUCCESSED########');
+        print(response.data['hourly']['temperature_2m'][index]);
+        return response.data['hourly']['temperature_2m'][index];
+        
       }
     } on DioError catch (e) {
+      print('#######ERRORR_____________########');
       switch (e.type) {
         case DioErrorType.connectTimeout:
           return "Connect Time Out.";

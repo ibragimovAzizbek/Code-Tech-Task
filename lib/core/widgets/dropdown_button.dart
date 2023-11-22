@@ -34,9 +34,9 @@ class DropdownInputButton extends StatelessWidget {
           borderSide: const BorderSide(color: Colors.black, width: 2),
         ),
         filled: true,
-        fillColor: Colors.greenAccent,
+        fillColor: Colors.cyan,
       ),
-      dropdownColor: Colors.greenAccent,
+      dropdownColor: Colors.cyan,
       items: lstData != null
           ? lstData!.map((String items) {
               return DropdownMenuItem(
@@ -83,9 +83,9 @@ class CityDropDownButton extends StatelessWidget {
           borderSide: const BorderSide(color: Colors.black, width: 2),
         ),
         filled: true,
-        fillColor: Colors.greenAccent,
+        fillColor: Colors.cyan,
       ),
-      dropdownColor: Colors.greenAccent,
+      dropdownColor: Colors.cyan,
       items: watchCubit.cityOfUzbekistan != null
           ? watchCubit.cityOfUzbekistan!
               .map((e) => e.city!)

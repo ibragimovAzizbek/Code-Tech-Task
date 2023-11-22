@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<TimeCubit>().fetchTime();
+    
   }
 
   @override
@@ -112,10 +113,12 @@ class _HomePageState extends State<HomePage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          "+27",
+                        ValueListenableBuilder(valueListenable: context.watch<TimeCubit>().weatherNum, builder: (context, value, child) {
+                          return Text(
+                          " + ${context.watch<TimeCubit>().weatherNum.value} C",
                           style: TextStyle(fontSize: 50.sp),
-                        ),
+                        );
+                        },),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.65,
                           child: Text(

@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:codetechtask/cubit/home/time/time_state.dart';
 import 'package:codetechtask/main.dart';
 import 'package:codetechtask/models/services/time_zone_service.dart';
+import 'package:codetechtask/models/services/weather_service.dart';
 import 'package:codetechtask/models/time/time_zone_model.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 
@@ -13,11 +15,13 @@ class TimeCubit extends Cubit<TimeState> {
   TimeCubit(this.timeZoneService) : super(TimeInitil());
 
   Future<void> fetchTime() async {
-    await timeZoneService.getTimeZone().then((response) {
+    await timeZoneService.getTimeZone().then((response)async {
       if (response is Response) {
         timeData!.put('time', TimeZoneModel.fromJson(response.data).datetime!);
         emit(TimeSuccussfully());
         changeTime();
+        num value = await WeatherService.getweatherService(countWeatherIndex);
+        weatherNum.value = value;
       } else {
         emit(TimeError(response));
       }
@@ -36,7 +40,20 @@ class TimeCubit extends Cubit<TimeState> {
   //   });
   // }
 
+  int countTimer = 0;
+  int countWeatherIndex = 0;
+
+  ValueNotifier<num?> weatherNum = ValueNotifier(0);
+
   changeTime() {
+    countTimer++;
+    if (countTimer == 2) {
+      Timer.periodic(const Duration(seconds: 120), (timer) async{ 
+       num value = await WeatherService.getweatherService(countWeatherIndex);
+       weatherNum.value = value;
+      });
+      countWeatherIndex = ((timeData!.get('time').hour * 60 + timeData!.get('time').minute) / 2).round();
+    }
     Timer.periodic(
       const Duration(seconds: 60),
       (Timer t) => {
