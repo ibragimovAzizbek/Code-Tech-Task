@@ -2,25 +2,25 @@ String weekdayDayName(int weekday) {
   String? day;
   switch (weekday) {
     case 1:
-      day = 'Dushanba';
+      day = 'Monday';
       break;
     case 2:
-      day = 'Seshanba';
+      day = 'Tuesday';
       break;
     case 3:
-      day = 'Chorshanba';
+      day = 'Wednesday';
       break;
     case 4:
-      day = 'Payshanba';
+      day = 'Thursday';
       break;
     case 5:
-      day = 'Juma';
+      day = 'Friday';
       break;
     case 6:
-      day = 'Shanba';
+      day = 'Saturday';
       break;
     case 7:
-      day = 'Yakshanba';
+      day = 'Sunday';
       break;
   }
   return day!;

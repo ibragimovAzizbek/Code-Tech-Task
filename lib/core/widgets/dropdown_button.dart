@@ -71,7 +71,7 @@ class CityDropDownButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
       menuMaxHeight: MediaQuery.of(context).size.height * 0.7,
-      hint: const Text("Tuman/shahar"),
+      hint: const Text("District/City"),
       borderRadius: BorderRadius.circular(16.r),
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
@@ -98,8 +98,8 @@ class CityDropDownButton extends StatelessWidget {
             }).toList()
           : [
               const DropdownMenuItem(
-                value: "Viloyat tanlanmagan",
-                child: Text("Viloyat tanlanmagan"),
+                value: "Region not selected",
+                child: Text("Region not selected"),
               ),
             ],
       onChanged: (String? newValue) {

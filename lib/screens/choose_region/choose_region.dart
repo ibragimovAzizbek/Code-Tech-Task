@@ -42,8 +42,8 @@ class ChooseRegion extends StatelessWidget {
                   basicInput(
                     readCubit,
                     watchCubit,
-                    "Viloyatlar",
-                    "Viloyatni tanlang",
+                    "Regions",
+                    "Select region",
                     state.regionData.map((e) => e.region!).toList(),
                   ),
                   SizedBox(height: 40.h),
@@ -53,7 +53,7 @@ class ChooseRegion extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Tuman/shahar",
+                          "District/City",
                           style: textstyle(
                             color: AppColor.regionColor,
                             size: 18.sp,
@@ -94,7 +94,7 @@ class ChooseRegion extends StatelessWidget {
                           }
                         : null,
                     child: Text(
-                      'Kirish',
+                      'Enter',
                       style: TextStyle(fontSize: 18.sp),
                     ),
                   )

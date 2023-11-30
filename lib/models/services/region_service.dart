@@ -8,6 +8,7 @@ class RegionService {
       Response response =
           await DioConfig.inherentce.createRequest().get(regionApi);
       if (response.statusCode == 200) {
+        print(response.data);
         return response;
       }
     } on DioError catch (e) {

@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Code Tech Task',
+          title: 'Ob-havo UZB',
           theme: context.watch<DrawerCubit>().appMode
               ? ThemeData.dark()
               : ThemeData.light(),

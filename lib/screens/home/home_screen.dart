@@ -7,6 +7,7 @@ import 'package:codetechtask/cubit/home/time/time_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/components/func/find_month_name.dart';
 import '../../core/components/func/weekday_day_name.dart';
@@ -59,7 +60,11 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
-                                "${timeData!.get('time').hour} : ${timeData!.get('time').minute}",
+                                // "${timeData!.get('time').hour} : ${timeData!.get('time').minute}",
+                                DateFormat.Hm().format(DateFormat('yyy-MM-ddTHH:mmZ')
+                      .parseUTC(
+                          timeData!.get('time').toIso8601String())
+                      .toLocal()),
                                 style: textstyle(
                                   color: AppColor.clockColor,
                                   size: 80.sp,
@@ -103,29 +108,29 @@ class _HomePageState extends State<HomePage> {
                     )),
                 SizedBox(height: 30.h),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Image.asset(
                       'assets/partly_cloudy.png',
-                      width: 120.w,
+                      width: 100.w,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         ValueListenableBuilder(valueListenable: context.watch<TimeCubit>().weatherNum, builder: (context, value, child) {
                           return Text(
-                          " + ${context.watch<TimeCubit>().weatherNum.value} C",
+                          " ${(context.watch<TimeCubit>().weatherNum.value)!.round()} C",
                           style: TextStyle(fontSize: 50.sp),
                         );
                         },),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.65,
                           child: Text(
-                            location!.get('location')['region'],
+                            location!.get('location')['region'].split(' ')[0],
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 40.sp),
+                            style: TextStyle(fontSize: 37.sp),
                           ),
                         ),
                       ],
